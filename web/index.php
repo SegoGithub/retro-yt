@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 // Program to display URL of current page.
 
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
@@ -69,10 +69,10 @@ echo $data;
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NokiaYT</title>
+    <title>RetroYT</title>
 </head>
 <body>
-<center><h1>YouTube for Nokia phones</h1>
+<center><h1>RetroYT</h1>
 <h2 id="title"></h2>
 <form action="/" method="get">
   YT Video ID
@@ -80,12 +80,17 @@ echo $data;
   <br>
   <input type="submit" id="form" value="Watch">
 </form>
+<object type="application/x-shockwave-flash" data="player_flv_mini.swf" width="288" height="360">
+    <param name="movie" value="player_flv_mini.swf" />
+    <param name="allowFullScreen" value="true" />
+    <param name="FlashVars" value="flv=videoplayback.flv%20&amp;width=288&amp;height=360&amp;autoplay=1&amp;autoload=1" />
+</object>
 </center>
 </body>
 </html>
 
-<?php else: ?>
-
+<?php else: ?> -->
+<!-- <?php > -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -93,19 +98,24 @@ echo $data;
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NokiaYT</title>
+    <title>RetroYT</title>
 </head>
 <body>
-<center><h1>YouTube for Nokia phones</h1>
-<img src="/nokiac7.gif" alt="Nokia C7-00">
+<center><h1>RetroYT</h1>
 <form action="/" method="get">
     YT Video ID
     <input type="text" size="30" name="v">
     <br>
     <input type="submit" id="form" value="Watch">
   </form>
+  <object type="application/x-shockwave-flash" data="player_flv_mini.swf" width="288" height="360">
+    <param name="movie" value="player_flv_mini.swf" />
+    <param name="allowFullScreen" value="true" />
+    <param name="FlashVars" value="flv=videoplayback.flv%20&amp;width=288&amp;height=360&amp;autoplay=1&amp;autoload=1" />
+</object>
+  <p>Originally made for the <a href="http://en.wikipedia.org/wiki/Nokia_C7-00">Nokia C7-00</a></p>
 </center>
 </body>
 </html>
 
-<?php endif ?>
+// <?php>
