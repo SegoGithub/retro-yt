@@ -1,10 +1,10 @@
-<!-- <?php
-// Program to display URL of current page.
+<?php
+$api = "192.168.0.223:8080";
 
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
-    $link = "https";
+$link = "https";
 else
-    $link = "http";
+$link = "http";
 
 // Here append the common URL characters.
 $link .= "://";
@@ -21,46 +21,26 @@ $url_components = parse_url($link);
 // string passed via URL
 parse_str($url_components['query'], $params);
 ?>
-
 <?php if ($params['v']): ?>
 <?php
-// fetch("http://invidio.xamh.de/api/v1/videos/", $params['v'], "?fields=formatStreams,title")
-function callAPI($method, $url, $data){
-  $curl = curl_init();
-  switch ($method){
-     case "POST":
-        curl_setopt($curl, CURLOPT_POST, 1);
-        if ($data)
-           curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        break;
-     case "PUT":
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-        if ($data)
-           curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        break;
-     default:
-        if ($data)
-           $url = sprintf("%s?%s", $url, http_build_query($data));
-  }
-  // OPTIONS:
-  curl_setopt($curl, CURLOPT_URL, $url);
-  curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-     'Content-Type: application/json',
-  ));
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-  // EXECUTE:
-  $result = curl_exec($curl);
-  if(!$result){die("Connection Failure");}
-  curl_close($curl);
-  return $result;
-}
+$curl = curl_init();
 
-$get_data = callAPI('GET', 'https://invidio.xamh.de/api/v1/videos/', $params['v'], '?fields=formatStreams,title', false);
-$response = json_decode($get_data, true);
-$errors = $response['response']['errors'];
-$data = $response['response']['data'][0];
-echo $data;
+curl_setopt_array($curl, array(
+  CURLOPT_URL => "http://" .$api. "/v1/retroyt/flash/" . $params['v'],
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache"
+  ),
+));
+
+$response = json_decode(curl_exec($curl), true);
+$err = curl_error($curl);
+
+echo $response;
+curl_close($curl);
 ?>
 
 <!DOCTYPE html>
@@ -79,18 +59,23 @@ echo $data;
   <input type="text" size="30" name="v">
   <br>
   <input type="submit" id="form" value="Watch">
-</form>
-<object type="application/x-shockwave-flash" data="player_flv_mini.swf" width="288" height="360">
-    <param name="movie" value="player_flv_mini.swf" />
+  <h2><?php echo $response['title'] ?></h2>
+  <object type="application/x-shockwave-flash" data="/player_flv_mini.swf" width="<?php echo $response['width'] ?>" height="<?php echo $response['height'] ?>">
+    <param name="movie" value="/player_flv_mini.swf" />
     <param name="allowFullScreen" value="true" />
-    <param name="FlashVars" value="flv=videoplayback.flv%20&amp;width=288&amp;height=360&amp;autoplay=1&amp;autoload=1" />
-</object>
+    <param name="FlashVars" value="flv=http%3A//192.168.0.223%3A8080/vid/<?php echo $params['v'] ?>/videoplayback.flv&amp;autoplay=1&amp;autoload=1" />
+  </object>
+  <p><?php echo $response['desc'] ?></p>
+  <p>subs: <?php echo $response['subs'] ?></p>
+  <p>views: <?php echo $response['views'] ?></p>
+  <p>likes: <?php echo $response['likes'] ?></p>
+  <p>dislikes: in the future</p>
+</form>
 </center>
 </body>
 </html>
 
-<?php else: ?> -->
-<!-- <?php > -->
+<?php else: ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -102,20 +87,15 @@ echo $data;
 </head>
 <body>
 <center><h1>RetroYT</h1>
+<h2>yt for old devices with flash</h2>
 <form action="/" method="get">
-    YT Video ID
-    <input type="text" size="30" name="v">
-    <br>
-    <input type="submit" id="form" value="Watch">
-  </form>
-  <object type="application/x-shockwave-flash" data="player_flv_mini.swf" width="288" height="360">
-    <param name="movie" value="player_flv_mini.swf" />
-    <param name="allowFullScreen" value="true" />
-    <param name="FlashVars" value="flv=videoplayback.flv%20&amp;width=288&amp;height=360&amp;autoplay=1&amp;autoload=1" />
-</object>
-  <p>Originally made for the <a href="http://en.wikipedia.org/wiki/Nokia_C7-00">Nokia C7-00</a></p>
+  YT Video ID
+  <input type="text" size="30" name="v">
+  <br>
+  <input type="submit" id="form" value="Watch">
+</form>
 </center>
 </body>
 </html>
 
-// <?php>
+<?php endif; ?>
