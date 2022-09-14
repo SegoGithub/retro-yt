@@ -69,7 +69,7 @@ curl_close($curl);
   <p>subs: <?php echo $response['subs'] ?></p>
   <p>views: <?php echo $response['views'] ?></p>
   <p>likes: <?php echo $response['likes'] ?></p>
-  <p>dislikes: in the future</p>
+  <p>dislikes: <?php echo $response['dislikes'] ?></p>
 </form>
 </center>
 </body>
