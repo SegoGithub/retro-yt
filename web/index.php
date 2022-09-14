@@ -1,5 +1,5 @@
 <?php
-$api = "192.168.0.223:8080";
+$api = "192.168.0.223";
 
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
@@ -26,7 +26,7 @@ parse_str($url_components['query'], $params);
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-  CURLOPT_URL => "http://" .$api. "/v1/retroyt/flash/" . $params['v'],
+  CURLOPT_URL => "http://" .$api. ":8080/v1/retroyt/flash/" . $params['v'],
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -63,7 +63,7 @@ curl_close($curl);
   <object type="application/x-shockwave-flash" data="/player_flv_mini.swf" width="<?php echo $response['width'] ?>" height="<?php echo $response['height'] ?>">
     <param name="movie" value="/player_flv_mini.swf" />
     <param name="allowFullScreen" value="true" />
-    <param name="FlashVars" value="flv=http%3A//192.168.0.223%3A8080/vid/<?php echo $params['v'] ?>/videoplayback.flv&amp;autoplay=1&amp;autoload=1" />
+    <param name="FlashVars" value="flv=http://192.168.0.223:8080/vid/<?php echo $params['v'] ?>/videoplayback.flv&amp;autoplay=1&amp;autoload=1" />
   </object>
   <p><?php echo $response['desc'] ?></p>
   <p>subs: <?php echo $response['subs'] ?></p>
@@ -77,7 +77,7 @@ curl_close($curl);
 
 <?php else: ?>
 
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
