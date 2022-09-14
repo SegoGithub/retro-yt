@@ -9,6 +9,7 @@ const { createFFmpeg, fetchFile } = require('@ffmpeg/ffmpeg');
 const download = require('download')
 
 app.set('json spaces', 0);
+app.use('/vid', require('express').static('vid'))
 const ffmpeg = createFFmpeg({ log: true });
 async function load() {
     await ffmpeg.load();
