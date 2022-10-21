@@ -15,8 +15,7 @@ This is intended for devices that have Flash pre-installed (example: Nokia [C7-O
 
 ## How does this work?
 There are 2 components, the API and the front-end.
-The API fetches video information from Invidious and Return YouTube Dislikes and downloads the video and converts the video from MP4 -> FLV.
-You may ask, why are you converting it from MP4 -> FLV? Because FLV is the most compatible video format that Flash can play.
+The API fetches video information from Invidious and Return YouTube Dislikes and downloads the video and converts the video from MP4 -> FLV (FLV is the most compatible Flash video format)
 
 The front-end is very simple, it fetches the data from the API (video stats) and displays the video. 
 
