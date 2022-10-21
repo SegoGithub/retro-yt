@@ -1,5 +1,5 @@
 <?php
-$api = "192.168.0.223";
+$api = "192.168.0.222";
 
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
@@ -63,7 +63,7 @@ curl_close($curl);
   <object type="application/x-shockwave-flash" data="/player_flv_mini.swf" width="<?php echo $response['width'] ?>" height="<?php echo $response['height'] ?>">
     <param name="movie" value="/player_flv_mini.swf" />
     <param name="allowFullScreen" value="true" />
-    <param name="FlashVars" value="flv=http://192.168.0.223:8080/vid/<?php echo $params['v'] ?>/videoplayback.flv&amp;autoplay=1&amp;autoload=1" />
+    <param name="FlashVars" value="flv=http://<?php echo $api ?>:8080/vid/<?php echo $params['v'] ?>/videoplayback.flv&amp;autoplay=1&amp;autoload=1" />
   </object>
   <p><?php echo $response['desc'] ?></p>
   <p>subs: <?php echo $response['subs'] ?></p>
