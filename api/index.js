@@ -1,10 +1,8 @@
 const app = require('express')();
 const PORT = 8080
 const cors = require('cors');
-const { response } = require('express');
 const fs = require('fs');
 const axios = require('axios');
-const ytdl = require('ytdl-core');
 const { createFFmpeg, fetchFile } = require('@ffmpeg/ffmpeg');
 const download = require('download')
 
