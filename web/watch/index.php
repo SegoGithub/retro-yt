@@ -14,7 +14,7 @@ $link .= "://";
 // Append the host(domain name, ip) to the URL.
 $link .= $_SERVER['HTTP_HOST'];
 
-// Append the requested resource location to the URL
+// Append the resource location to the URL
 $link .= $_SERVER['REQUEST_URI'];
 
 $url_components = parse_url($link);
@@ -30,7 +30,7 @@ $curl = curl_init();
 curl_setopt_array($curl, array(
   CURLOPT_URL => "http://" .$api. "/video/" . $params['v'],
   CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_TIMEOUT => 30,
+  CURLOPT_TIMEOUT => 120,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "GET",
   CURLOPT_HTTPHEADER => array(
@@ -63,6 +63,7 @@ curl_close($curl);
 </form>
 <center>
 <h2><?php echo $response['title'] ?></h2>
+<h3>if page has no info, then the video is probably still processing</h3>
   <?php if ($params['player'] == 'flash'): ?>
   <object type="application/x-shockwave-flash" data="/player_flv_mini.swf" width="<?php echo $response['width'] ?>" height="<?php echo $response['height'] ?>">
     <param name="movie" value="/player_flv_mini.swf" />
