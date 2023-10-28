@@ -66,11 +66,15 @@ app.get('/video/:vid', async (req, res) => {
                     })
                   });
 
+                }).catch(error => {
+                  console.log(error.message);
                 });
             }
           }
 
-          )
+          ).catch(error => {
+            console.log(error.message);
+          })
       })
       .catch(error => {
         console.log(error.message);
