@@ -1,7 +1,7 @@
 <?php
 $config = parse_ini_file("../../config.ini");
 
-$api = $config['ip'] . ":" . $config['port'];
+$api = getenv('RETRO_YT_API_IP') . ":" . getenv('RETRO_YT_API_PORT');
 
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";

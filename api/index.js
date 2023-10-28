@@ -1,14 +1,12 @@
 const app = require('express')();
-const ini = require('ini')
 const cors = require('cors');
 const fs = require('fs');
-const config = ini.parse(fs.readFileSync('../config.ini', 'utf-8'))
 const fsextra = require('fs-extra')
 const axios = require('axios');
 const download = require('download');
 const { FFmpegCommand, FFmpegInput, FFmpegOutput } = require('fessonia')();
 
-const PORT = config.api.port;
+const PORT = process.env.RETRO_YT_API_PORT;
 
 app.use(cors());
 app.set('json spaces', 0);
