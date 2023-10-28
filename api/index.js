@@ -16,29 +16,32 @@ app.listen(
   () => console.log(`RetroYT API is running on ${PORT}`)
 )
 
-app.get('/video/:vid', (req, res) => {
+app.get('/video/:vid', async (req, res) => {
   const { vid } = req.params;
-  axios.get(`https://vid.priv.au/api/v1/videos/${vid}?fields=title,description,viewCount,likeCount,author,authorId,subCountText,formatStreams`)
-    .then(data => {
-
-      axios.get(`https://returnyoutubedislikeapi.com/votes?videoId=${vid}`)
-        .then(dislikes => {
-          let width = data.data.formatStreams[1].size.split('x')[0];
-          let height = data.data.formatStreams[1].size.split('x')[1];
-          if (fs.existsSync(`./vid/${vid}/videoplayback.flv`) && fs.existsSync(`./vid/${vid}/videoplayback.wmv`)) {
-            res.json({
-              title: data.data.title,
-              desc: data.data.description,
-              views: data.data.viewCount,
-              likes: data.data.likeCount,
-              dislikes: dislikes.data.dislikes,
-              channel: data.data.author,
-              channelID: data.data.authorId,
-              subs: data.data.subCountText,
-              width: width,
-              height: height,
-            })
-          } else {
+  if (fs.existsSync(`./vid/${vid}/processing`)) {
+    res.sendStatus(503)
+  } else {
+    axios.get(`https://anontube.lvkaszus.pl/api/v1/videos/${vid}?fields=title,description,viewCount,likeCount,author,authorId,subCountText,formatStreams`)
+      .then(data => {
+        axios.get(`https://returnyoutubedislikeapi.com/votes?videoId=${vid}`)
+          .then(dislikes => {
+            let width = data.data.formatStreams[1].size.split('x')[0];
+            let height = data.data.formatStreams[1].size.split('x')[1];
+            if (fs.existsSync(`./vid/${vid}/videoplayback.flv`) && fs.existsSync(`./vid/${vid}/videoplayback.wmv`)) {
+              res.json({
+                title: data.data.title,
+                desc: data.data.description,
+                views: data.data.viewCount,
+                likes: data.data.likeCount,
+                dislikes: dislikes.data.dislikes,
+                channel: data.data.author,
+                channelID: data.data.authorId,
+                subs: data.data.subCountText,
+                width: width,
+                height: height,
+              })
+            } else {
+              fsextra.createFileSync(`./vid/${vid}/processing`)
               download(data.data.formatStreams[1].url, `./vid/${vid}`)
                 .then(() => {
                   let cmd = new FFmpegCommand();
@@ -48,6 +51,7 @@ app.get('/video/:vid', (req, res) => {
                   cmd.spawn();
                   cmd.on('success', () => {
                     fsextra.removeSync(`./vid/${vid}/videoplayback.mp4`)
+                    fsextra.removeSync(`./vid/${vid}/processing`)
                     res.json({
                       title: data.data.title,
                       desc: data.data.description,
@@ -66,9 +70,10 @@ app.get('/video/:vid', (req, res) => {
             }
           }
 
-        )
-    })
-    .catch(error => {
-      console.log(error.message);
-    })
+          )
+      })
+      .catch(error => {
+        console.log(error.message);
+      })
+  };
 });
